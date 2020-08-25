@@ -1,15 +1,31 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" 
+pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script>
+function memberUpdate() {
+	location.href="memberupdate";
+	
+}
+</script>
 </head>
 <body>
 <h1>로그인성공</h1>
 	로그인 아이디 : ${sessionScope.loginResult}<!--세션 가져오기  --> <br>
-	${sessionScope.loginResult} 님 로그인을 환영합니다
+	${sessionScope.loginResult} 님 로그인을 환영합니다 <br>
+	<!-- 로그인 아이디가 admin 이면 목록조회 링크노출 
+		admin 아닐시에 링크 비노출-->
+	<c:if test="${sessionScope.loginResult eq 'admin'}"  >
+	<a href="memberlist">관리자모드(회원목록)</a><br>
+	</c:if>
+	
+	<button onclick="memberUpdate()">회원정보수정버튼</button>
+	
+	
 	<!--  redirect 방식으로 화면이동을 했을 떄
 		1. request, setAttribute 메소드를 활용해서 저장한 데이터는 사용수 없음
 		2.session.setAttribue 메소드를 활용해서 저장한 데이터만 사용이가능함 (세션에는 보통 아이디만 저장)

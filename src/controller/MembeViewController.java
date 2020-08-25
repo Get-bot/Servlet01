@@ -10,26 +10,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import dto.MemberDTO;
-import service.MemberListService;
+import service.MemberViewService;
 
-import java.util.*;
 
-@WebServlet("/memberlist")
-public class MemberListController extends HttpServlet {
+@WebServlet("/memberview")
+public class MembeViewController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-    public MemberListController() {
+    public MembeViewController() {
         super();
     }
     protected void doProcess(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     	request.setCharacterEncoding("UTF-8");
-    	MemberListService mlistService = new MemberListService();
-    	List<MemberDTO> memberList = new ArrayList<MemberDTO>();
-    	memberList = mlistService.memberList();
+    	MemberViewService mViewService = new MemberViewService();
+    	// 회원 한명에 대한 전체 정보를 가지고 MemberView.jsp로 가야됨
+    	MemberDTO memberView = new MemberDTO();
+    	memberView = mViewService.memberView(request, response);
     	
-    	request.setAttribute("memberList", memberList);
-    	RequestDispatcher dispatcher= request.getRequestDispatcher("MemberList.jsp");
+    	request.setAttribute("memberView", memberView);
+    	RequestDispatcher dispatcher= request.getRequestDispatcher("MemberView.jsp");
     	dispatcher.forward(request, response);
+    	
     }
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		System.out.println("doGet 호출 확인!");

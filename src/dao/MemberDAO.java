@@ -6,7 +6,6 @@ import java.util.List;
 
 import db.DBConnection;
 import dto.MemberDTO;
-import oracle.net.aso.r;
 
 public class MemberDAO {
 	Connection con = null;
@@ -119,14 +118,90 @@ public class MemberDAO {
 				member.setPhone(phone);
 				member.setMemail(email);
 				member.setMgender(gender);
-			}
+				memberList.add(member);
+				}
 				
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		}finally {
+			rsClose();
 		}
 		
 		
-		return null;
+		return memberList;
 	}
-}
+
+	public MemberDTO memberView(String mid) {
+		String sql = "SELECT * FROM MEMBER0821_1 WHERE MID = ?";
+		MemberDTO memberView = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,mid);
+			rs = pstmt.executeQuery();
+			//조회 데이터를 모두담기위해 while문사용
+			while(rs.next()) {
+				memberView = new MemberDTO();
+				//가져온 데이터를 member객체의 mid필드 값으로 저장
+				memberView.setMid(rs.getString("MID"));
+				memberView.setMpassword(rs.getString("MPASSWORD"));
+				memberView.setMname(rs.getString("MNAME"));
+				memberView.setMemail(rs.getString("MEMAIL"));
+				memberView.setMgender(rs.getString("MGENDER"));
+				}	
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+					rsClose();
+				}
+return memberView;
+	}
+
+	public MemberDTO memberUpdate(String mid) {
+		String sql = "SELECT * FROM MEMBER0821_1 WHERE MID = ?";
+		MemberDTO memberUpdate = null;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,mid);
+			rs = pstmt.executeQuery();
+			//조회 데이터를 모두담기위해 while문사용
+			while(rs.next()) {
+				memberUpdate = new MemberDTO();
+				//가져온 데이터를 member객체의 mid필드 값으로 저장
+				memberUpdate.setMid(rs.getString("MID"));
+				memberUpdate.setMpassword(rs.getString("MPASSWORD"));
+				memberUpdate.setMname(rs.getString("MNAME"));
+				memberUpdate.setMemail(rs.getString("MEMAIL"));
+				memberUpdate.setMgender(rs.getString("MGENDER"));
+				}	
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+					rsClose();
+				}
+		return memberUpdate;
+	}
+	
+	public int memberUpdateP(MemberDTO memberUdateP,String mid2) {
+		String sql = "UPDATE MEMBER0821_1  SET MID = ? , MPASSWORD = ? , MNAME = ? , MEMAIL = ? , MGENDER = ?   WHERE MID = ? ";
+		int joinresult = 0;
+		try {
+			pstmt = con.prepareStatement(sql);
+			pstmt.setString(1,memberUdateP.getMid());
+			pstmt.setString(2,memberUdateP.getMpassword());
+			pstmt.setString(3,memberUdateP.getMname());
+			pstmt.setString(4,memberUdateP.getMemail());
+			pstmt.setString(5,memberUdateP.getMgender());
+			pstmt.setString(6,mid2);
+			joinresult = pstmt.executeUpdate();
+			} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}finally {
+					pstmtClose();
+				}
+		return joinresult;
+	} 
+	}
